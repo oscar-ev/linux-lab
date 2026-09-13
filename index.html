@@ -4,80 +4,516 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Linux Lab | Sistemas Operacionais</title>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { min-height: 100vh; overflow: hidden; background: #0b0f14; color: #e6edf3; font-family: Arial, Helvetica, sans-serif; }
-    .topbar { height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; background: #111820; border-bottom: 1px solid #26313d; }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .logo { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 8px; background: #f1f5f9; color: #111820; font-size: 21px; }
-    .brand-title { font-size: 18px; font-weight: 700; }
-    .brand-subtitle { margin-top: 2px; color: #8b98a8; font-size: 12px; }
-    .system-status { display: flex; align-items: center; gap: 8px; color: #8b98a8; font-size: 12px; }
-    .status-dot { width: 9px; height: 9px; border-radius: 50%; background: #d29922; box-shadow: 0 0 8px rgba(210, 153, 34, .5); }
-    .status-dot.online { background: #3fb950; box-shadow: 0 0 8px rgba(63, 185, 80, .5); }
-    .layout { height: calc(100vh - 58px); display: grid; grid-template-columns: 190px 1fr; }
-    .sidebar { overflow-y: auto; padding: 20px 12px; background: #0f151c; border-right: 1px solid #26313d; }
-    .section-title { margin: 8px 10px 12px; color: #6f7d8d; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-    .mission { width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 10px; margin-bottom: 4px; border: 0; border-radius: 7px; background: transparent; color: #566270; text-align: left; cursor: not-allowed; }
-    .mission.active { padding-left: 7px; background: #1d2935; border-left: 3px solid #58a6ff; color: #fff; cursor: default; }
-    .mission-icon { width: 23px; text-align: center; font-size: 15px; }
-    .mission-info { display: flex; flex-direction: column; gap: 3px; }
-    .mission-name { font-size: 13px; }
-    .mission-description { color: #697787; font-size: 10px; }
-    .progress-box { margin: 28px 10px 0; padding-top: 20px; border-top: 1px solid #26313d; }
-    .progress-label { display: flex; justify-content: space-between; margin-bottom: 8px; color: #8b98a8; font-size: 12px; }
-    .progress-bar { height: 7px; overflow: hidden; border-radius: 10px; background: #202a34; }
-    .progress-fill { width: 12%; height: 100%; border-radius: 10px; background: #58a6ff; }
-    .main { min-width: 0; display: grid; grid-template-rows: 170px 1fr; background: #0b0f14; }
-    .mission-panel { overflow-y: auto; padding: 20px 24px; background: #0e141b; border-bottom: 1px solid #26313d; }
-    .mission-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .mission-title { font-size: 17px; }
-    .mission-tag { padding: 5px 9px; border: 1px solid #264766; border-radius: 20px; background: #182b3d; color: #58a6ff; font-size: 10px; }
-    .mission-text { max-width: 900px; color: #9da9b5; font-size: 13px; line-height: 1.6; }
-    .mission-objective { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .objective { padding: 6px 9px; border: 1px solid #26313d; border-radius: 5px; background: #131b23; color: #b9c4cf; font-family: monospace; font-size: 11px; }
-    .terminal-area { min-height: 0; padding: 18px; }
-    .terminal-window { width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #26313d; border-radius: 9px; background: #05080b; box-shadow: 0 15px 45px rgba(0,0,0,.3); }
-    .terminal-header { height: 38px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: #111820; border-bottom: 1px solid #26313d; }
-    .terminal-controls, .terminal-actions { display: flex; gap: 6px; }
-    .control { width: 10px; height: 10px; border-radius: 50%; background: #4b5563; }
-    .terminal-title { color: #788594; font-family: monospace; font-size: 11px; }
-    .terminal-button { padding: 5px 8px; border: 1px solid #303b47; border-radius: 5px; background: #17202a; color: #9da9b5; font-size: 10px; cursor: pointer; }
-    .terminal-button:hover { background: #202b36; color: #fff; }
-    #screen_container { position: relative; flex: 1; min-height: 0; overflow: auto; padding: 14px; outline: none; background: #000; cursor: text; }
-    #screen_container:focus { box-shadow: inset 0 0 0 1px #58a6ff; }
-    #terminalOutput { min-height: 100%; color: #d2e9d0; font: 14px/1.25 Consolas, "Courier New", monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
-    .boot-message { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #7d8996; font: 13px monospace; pointer-events: none; }
-    @media (max-width: 850px) { body { overflow: auto; } .layout { height: auto; min-height: calc(100vh - 58px); grid-template-columns: 1fr; } .sidebar { border-right: 0; border-bottom: 1px solid #26313d; } .main { min-height: 650px; } .system-status { display: none; } }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      background: #0b0f14;
+      color: #e6edf3;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .topbar {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      background: #111820;
+      border-bottom: 1px solid #26313d;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #f1f5f9;
+      color: #111820;
+      font-size: 21px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .brand-subtitle {
+      margin-top: 2px;
+      color: #8b98a8;
+      font-size: 12px;
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #8b98a8;
+      font-size: 12px;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #d29922;
+      box-shadow: 0 0 8px rgba(210, 153, 34, 0.5);
+    }
+
+    .status-dot.online {
+      background: #3fb950;
+      box-shadow: 0 0 8px rgba(63, 185, 80, 0.5);
+    }
+
+    .layout {
+      height: calc(100vh - 58px);
+      display: grid;
+      grid-template-columns: 190px 1fr;
+    }
+
+    .sidebar {
+      overflow-y: auto;
+      padding: 20px 12px;
+      background: #0f151c;
+      border-right: 1px solid #26313d;
+    }
+
+    .section-title {
+      margin: 8px 10px 12px;
+      color: #6f7d8d;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .mission {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 10px;
+      margin-bottom: 4px;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: #566270;
+      text-align: left;
+      cursor: not-allowed;
+    }
+
+    .mission.active {
+      padding-left: 7px;
+      background: #1d2935;
+      border-left: 3px solid #58a6ff;
+      color: #fff;
+      cursor: default;
+    }
+
+    .mission-icon {
+      width: 23px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .mission-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .mission-name {
+      font-size: 13px;
+    }
+
+    .mission-description {
+      color: #697787;
+      font-size: 10px;
+    }
+
+    .progress-box {
+      margin: 28px 10px 0;
+      padding-top: 20px;
+      border-top: 1px solid #26313d;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: #8b98a8;
+      font-size: 12px;
+    }
+
+    .progress-bar {
+      height: 7px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: #202a34;
+    }
+
+    .progress-fill {
+      width: 12%;
+      height: 100%;
+      border-radius: 10px;
+      background: #58a6ff;
+    }
+
+    .main {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: 170px 1fr;
+      background: #0b0f14;
+    }
+
+    .mission-panel {
+      overflow-y: auto;
+      padding: 20px 24px;
+      background: #0e141b;
+      border-bottom: 1px solid #26313d;
+    }
+
+    .mission-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .mission-title {
+      font-size: 17px;
+    }
+
+    .mission-tag {
+      padding: 5px 9px;
+      border: 1px solid #264766;
+      border-radius: 20px;
+      background: #182b3d;
+      color: #58a6ff;
+      font-size: 10px;
+    }
+
+    .mission-text {
+      max-width: 900px;
+      color: #9da9b5;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .mission-objective {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .objective {
+      padding: 6px 9px;
+      border: 1px solid #26313d;
+      border-radius: 5px;
+      background: #131b23;
+      color: #b9c4cf;
+      font-family: monospace;
+      font-size: 11px;
+    }
+
+    .terminal-area {
+      min-height: 0;
+      padding: 18px;
+    }
+
+    .terminal-window {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid #26313d;
+      border-radius: 9px;
+      background: #05080b;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+    }
+
+    .terminal-header {
+      height: 38px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      background: #111820;
+      border-bottom: 1px solid #26313d;
+    }
+
+    .terminal-controls,
+    .terminal-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .control {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #4b5563;
+    }
+
+    .terminal-title {
+      color: #788594;
+      font-family: monospace;
+      font-size: 11px;
+    }
+
+    .terminal-button {
+      padding: 5px 8px;
+      border: 1px solid #303b47;
+      border-radius: 5px;
+      background: #17202a;
+      color: #9da9b5;
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .terminal-button:hover {
+      background: #202b36;
+      color: #fff;
+    }
+
+    #screen_container {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 14px;
+      outline: none;
+      background: #000;
+      cursor: text;
+    }
+
+    #screen_container:focus {
+      box-shadow: inset 0 0 0 1px #58a6ff;
+    }
+
+    #terminalOutput {
+      min-height: 100%;
+      color: #d2e9d0;
+      font: 14px/1.25 Consolas, "Courier New", monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .boot-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #7d8996;
+      font: 13px monospace;
+      pointer-events: none;
+    }
+
+    @media (max-width: 850px) {
+      body {
+        overflow: auto;
+      }
+
+      .layout {
+        height: auto;
+        min-height: calc(100vh - 58px);
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid #26313d;
+      }
+
+      .main {
+        min-height: 650px;
+      }
+
+      .system-status {
+        display: none;
+      }
+    }
   </style>
 </head>
+
 <body>
   <header class="topbar">
-    <div class="brand"><div class="logo">🐧</div><div><div class="brand-title">Linux Lab</div><div class="brand-subtitle">Sistemas Operacionais • Laboratório Interativo</div></div></div>
-    <div class="system-status"><span class="status-dot" id="statusDot"></span><span id="statusText">Inicializando Linux...</span></div>
+    <div class="brand">
+      <div class="logo">🐧</div>
+
+      <div>
+        <div class="brand-title">Linux Lab</div>
+        <div class="brand-subtitle">Sistemas Operacionais • Laboratório Interativo</div>
+      </div>
+    </div>
+
+    <div class="system-status">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Inicializando Linux...</span>
+    </div>
   </header>
+
   <div class="layout">
     <aside class="sidebar">
       <div class="section-title">Missões</div>
-      <button class="mission active"><span class="mission-icon">✓</span><span class="mission-info"><span class="mission-name">01 • Conhecendo o Shell</span><span class="mission-description">Primeiros comandos</span></span></button>
-      <button class="mission"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">02 • Sistema de Arquivos</span><span class="mission-description">Diretórios e arquivos</span></span></button>
-      <button class="mission"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">03 • Permissões</span><span class="mission-description">chmod, chown e usuários</span></span></button>
-      <button class="mission"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">04 • Processos</span><span class="mission-description">ps, jobs e kill</span></span></button>
-      <button class="mission"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">05 • Pipes</span><span class="mission-description">Comunicação entre comandos</span></span></button>
-      <button class="mission"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">06 • Kernel</span><span class="mission-description">/proc e informações do sistema</span></span></button>
-      <button class="mission"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">07 • Bash</span><span class="mission-description">Variáveis e scripts</span></span></button>
-      <button class="mission"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">08 • Desafio Final</span><span class="mission-description">Desafio prático</span></span></button>
-      <div class="progress-box"><div class="progress-label"><span>Progresso</span><span>12%</span></div><div class="progress-bar"><div class="progress-fill"></div></div></div>
+
+      <button class="mission active" type="button">
+        <span class="mission-icon">✓</span>
+        <span class="mission-info">
+          <span class="mission-name">01 • Conhecendo o Shell</span>
+          <span class="mission-description">Primeiros comandos</span>
+        </span>
+      </button>
+
+      <button class="mission" type="button">
+        <span class="mission-icon">🔒</span>
+        <span class="mission-info">
+          <span class="mission-name">02 • Sistema de Arquivos</span>
+          <span class="mission-description">Diretórios e arquivos</span>
+        </span>
+      </button>
+
+      <button class="mission" type="button">
+        <span class="mission-icon">🔒</span>
+        <span class="mission-info">
+          <span class="mission-name">03 • Permissões</span>
+          <span class="mission-description">chmod, chown e usuários</span>
+        </span>
+      </button>
+
+      <button class="mission" type="button">
+        <span class="mission-icon">🔒</span>
+        <span class="mission-info">
+          <span class="mission-name">04 • Processos</span>
+          <span class="mission-description">ps, jobs e kill</span>
+        </span>
+      </button>
+
+      <button class="mission" type="button">
+        <span class="mission-icon">🔒</span>
+        <span class="mission-info">
+          <span class="mission-name">05 • Pipes</span>
+          <span class="mission-description">Comunicação entre comandos</span>
+        </span>
+      </button>
+
+      <button class="mission" type="button">
+        <span class="mission-icon">🔒</span>
+        <span class="mission-info">
+          <span class="mission-name">06 • Kernel</span>
+          <span class="mission-description">/proc e informações do sistema</span>
+        </span>
+      </button>
+
+      <button class="mission" type="button">
+        <span class="mission-icon">🔒</span>
+        <span class="mission-info">
+          <span class="mission-name">07 • Bash</span>
+          <span class="mission-description">Variáveis e scripts</span>
+        </span>
+      </button>
+
+      <button class="mission" type="button">
+        <span class="mission-icon">🔒</span>
+        <span class="mission-info">
+          <span class="mission-name">08 • Desafio Final</span>
+          <span class="mission-description">Desafio prático</span>
+        </span>
+      </button>
+
+      <div class="progress-box">
+        <div class="progress-label">
+          <span>Progresso</span>
+          <span>12%</span>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
     </aside>
+
     <main class="main">
-      <section class="mission-panel"><div class="mission-header"><h1 class="mission-title">Missão 01 — Conhecendo o Shell</h1><span class="mission-tag">INICIANTE</span></div><p class="mission-text">Você acabou de acessar um sistema Linux. Antes de executar tarefas administrativas, descubra algumas informações básicas sobre o ambiente em que está trabalhando.</p><div class="mission-objective"><span class="objective">descobrir usuário</span><span class="objective">descobrir diretório</span><span class="objective">descobrir sistema</span></div></section>
-      <section class="terminal-area"><div class="terminal-window"><div class="terminal-header"><div class="terminal-controls"><span class="control"></span><span class="control"></span><span class="control"></span></div><div class="terminal-title">Linux Terminal • v86</div><div class="terminal-actions"><button class="terminal-button" id="restartButton" type="button">Reiniciar</button><button class="terminal-button" id="clearButton" type="button">Limpar</button></div></div><div id="screen_container" tabindex="0" role="textbox" aria-label="Terminal Linux"><pre id="terminalOutput" aria-live="polite"></pre><div class="boot-message" id="bootMessage">Inicializando ambiente Linux...</div></div></div></section>
+      <section class="mission-panel">
+        <div class="mission-header">
+          <h1 class="mission-title">Missão 01 — Conhecendo o Shell</h1>
+          <span class="mission-tag">INICIANTE</span>
+        </div>
+
+        <p class="mission-text">
+          Você acabou de acessar um sistema Linux. Antes de executar tarefas
+          administrativas, descubra algumas informações básicas sobre o ambiente
+          em que está trabalhando.
+        </p>
+
+        <div class="mission-objective">
+          <span class="objective">descobrir usuário</span>
+          <span class="objective">descobrir diretório</span>
+          <span class="objective">descobrir sistema</span>
+        </div>
+      </section>
+
+      <section class="terminal-area">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-controls">
+              <span class="control"></span>
+              <span class="control"></span>
+              <span class="control"></span>
+            </div>
+
+            <div class="terminal-title">Linux Terminal • v86</div>
+
+            <div class="terminal-actions">
+              <button class="terminal-button" id="restartButton" type="button">
+                Reiniciar
+              </button>
+
+              <button class="terminal-button" id="clearButton" type="button">
+                Limpar
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="screen_container"
+            tabindex="0"
+            role="textbox"
+            aria-label="Terminal Linux"
+          >
+            <pre id="terminalOutput" aria-live="polite"></pre>
+
+            <div class="boot-message" id="bootMessage">
+              Inicializando ambiente Linux...
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
   <script src="v86/libv86.js"></script>
+
   <script>
     let emulator = null;
+
     const screen = document.getElementById("screen_container");
     const output = document.getElementById("terminalOutput");
     const bootMessage = document.getElementById("bootMessage");
@@ -94,53 +530,115 @@
 
     function iniciarLinux() {
       setStatus("Carregando Linux...", false);
+      output.textContent = "";
+      bootMessage.style.display = "block";
 
-      // ESTA ERA A PARTE QUE FALTAVA:
-      // aqui é onde o emulador de fato é criado e conectado
-      // aos arquivos de BIOS e do kernel do seu repositório.
-      emulator = new V86({
-        wasm_path: "v86/v86.wasm",
-        memory_size: 128 * 1024 * 1024,
-        vga_memory_size: 8 * 1024 * 1024,
-        screen_container: screen,
-        bios: { url: "bios/seabios.bin" },
-        vga_bios: { url: "bios/vgabios.bin" },
-        bzimage: { url: "linux/buildroot-bzimage68.bin" },
-        cmdline: "tsc=reliable mitigations=off random.trust_cpu=on",
-        autostart: true,
-      });
+      try {
+        emulator = new V86({
+          wasm_path: "v86/v86.wasm",
 
-      // Espelha tudo que sai pela saída serial também no <pre>,
-      // útil caso você queira usar esse texto pra validar as missões.
-      emulator.add_listener("serial0-output-char", function (char) {
-        writeTerminal(char);
-      });
+          memory_size: 128 * 1024 * 1024,
+          vga_memory_size: 8 * 1024 * 1024,
 
-      // Assim que o emulador terminar de subir, tira a mensagem de boot
-      // e marca o status como "online".
-      emulator.add_listener("emulator-ready", function () {
-        if (bootMessage) bootMessage.remove();
-        setStatus("Linux em execução", true);
-        screen.focus();
-      });
+          bios: {
+            url: "bios/seabios.bin"
+          },
+
+          vga_bios: {
+            url: "bios/vgabios.bin"
+          },
+
+          bzimage: {
+            url: "linux/buildroot-bzimage68.bin",
+            async: false
+          },
+
+          filesystem: {},
+
+          cmdline: "tsc=reliable mitigations=off random.trust_cpu=on",
+
+          autostart: true
+        });
+
+        /*
+          Esta imagem Buildroot usa a serial0 como terminal.
+          Não use screen_container dentro do objeto V86.
+        */
+        emulator.add_listener("serial0-output-byte", function (byte) {
+          const char = String.fromCharCode(byte);
+
+          if (char !== "\r") {
+            writeTerminal(char);
+          }
+
+          if (output.textContent.endsWith("~% ")) {
+            bootMessage.style.display = "none";
+            setStatus("Linux pronto", true);
+            screen.focus();
+          }
+        });
+      } catch (erro) {
+        console.error("Erro ao iniciar o Linux:", erro);
+
+        bootMessage.textContent =
+          "Erro ao carregar o Linux. Verifique os arquivos v86, bios e linux.";
+
+        setStatus("Erro ao iniciar Linux", false);
+      }
     }
 
     document.getElementById("restartButton").addEventListener("click", function () {
-      if (emulator) {
-        emulator.restart();
-        setStatus("Reiniciando Linux...", false);
-      }
+      location.reload();
     });
 
     document.getElementById("clearButton").addEventListener("click", function () {
       output.textContent = "";
+
+      if (emulator?.serial0_send) {
+        emulator.serial0_send("clear\n");
+      }
+
+      screen.focus();
     });
 
     screen.addEventListener("click", function () {
       screen.focus();
     });
 
-    iniciarLinux();
+    screen.addEventListener("keydown", function (event) {
+      if (!emulator?.serial0_send) return;
+
+      const teclasEspeciais = {
+        Enter: "\n",
+        Backspace: "\x7f",
+        Tab: "\t",
+        Escape: "\x1b",
+        ArrowUp: "\x1b[A",
+        ArrowDown: "\x1b[B",
+        ArrowRight: "\x1b[C",
+        ArrowLeft: "\x1b[D",
+        Home: "\x1b[H",
+        End: "\x1b[F",
+        Delete: "\x1b[3~"
+      };
+
+      let texto = teclasEspeciais[event.key];
+
+      if (event.ctrlKey && event.key.toLowerCase() === "c") {
+        texto = "\x03";
+      } else if (event.ctrlKey && event.key.toLowerCase() === "d") {
+        texto = "\x04";
+      } else if (!event.ctrlKey && !event.altKey && event.key.length === 1) {
+        texto = event.key;
+      }
+
+      if (texto !== undefined) {
+        event.preventDefault();
+        emulator.serial0_send(texto);
+      }
+    });
+
+    window.addEventListener("load", iniciarLinux);
   </script>
 </body>
 </html>
