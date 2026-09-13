@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Lab | Sistemas Operacionais</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0b0f14;
+            color: #e6edf3;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+        }
+
+        /* =========================
+           CABEÇALHO
+        ========================= */
+
+        .topbar {
+            height: 58px;
+            background: #111820;
+            border-bottom: 1px solid #26313d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            color: #111820;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .brand-subtitle {
+            color: #8b98a8;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #8b98a8;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #3fb950;
+            box-shadow: 0 0 8px rgba(63, 185, 80, 0.5);
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .layout {
+            height: calc(100vh - 58px);
+            display: grid;
+            grid-template-columns: 270px 1fr;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            background: #0f151c;
+            border-right: 1px solid #26313d;
+            overflow-y: auto;
+            padding: 20px 14px;
+        }
+
+        .section-title {
+            color: #6f7d8d;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 8px 10px 12px;
+            text-transform: uppercase;
+        }
+
+        .mission {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #b9c4cf;
+            padding: 12px 10px;
+            margin-bottom: 4px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .mission:hover {
+            background: #18212b;
+            color: #fff;
+        }
+
+        .mission.active {
+            background: #1d2935;
+            color: #fff;
+            border-left: 3px solid #58a6ff;
+            padding-left: 7px;
+        }
+
+        .mission.locked {
+            color: #566270;
+            cursor: not-allowed;
+        }
+
+        .mission-icon {
+            width: 23px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .mission-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .mission-name {
+            font-size: 13px;
+        }
+
+        .mission-description {
+            font-size: 10px;
+            color: #697787;
+        }
+
+        .progress-box {
+            margin: 28px 10px 0;
+            padding-top: 20px;
+            border-top: 1px solid #26313d;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #8b98a8;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 7px;
+            background: #202a34;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 12%;
+            background: #58a6ff;
+            border-radius: 10px;
+        }
+
+        /* =========================
+           ÁREA PRINCIPAL
+        ========================= */
+
+        .main {
+            min-width: 0;
+            display: grid;
+            grid-template-rows: 170px 1fr;
+            background: #0b0f14;
+        }
+
+        /* =========================
+           MISSÃO
+        ========================= */
+
+        .mission-panel {
+            padding: 20px 24px;
+            border-bottom: 1px solid #26313d;
+            background: #0e141b;
+            overflow-y: auto;
+        }
+
+        .mission-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .mission-title {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .mission-tag {
+            font-size: 10px;
+            background: #182b3d;
+            color: #58a6ff;
+            border: 1px solid #264766;
+            border-radius: 20px;
+            padding: 5px 9px;
+        }
+
+        .mission-text {
+            max-width: 900px;
+            color: #9da9b5;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .mission-objective {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .objective {
+            background: #131b23;
+            border: 1px solid #26313d;
+            border-radius: 5px;
+            padding: 6px 9px;
+            color: #b9c4cf;
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        /* =========================
+           TERMINAL
+        ========================= */
+
+        .terminal-area {
+            padding: 18px;
+            min-height: 0;
+        }
+
+        .terminal-window {
+            height: 100%;
+            width: 100%;
+            background: #05080b;
+            border: 1px solid #26313d;
+            border-radius: 9px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+        }
+
+        .terminal-header {
+            height: 38px;
+            background: #111820;
+            border-bottom: 1px solid #26313d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            flex-shrink: 0;
+        }
+
+        .terminal-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .control {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4b5563;
+        }
+
+        .terminal-title {
+            color: #788594;
+            font-size: 11px;
+            font-family: monospace;
+        }
+
+        .terminal-actions {
+            display: flex;
+            gap: 7px;
+        }
+
+        .terminal-button {
+            border: 1px solid #303b47;
+            background: #17202a;
+            color: #9da9b5;
+            border-radius: 5px;
+            padding: 5px 8px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .terminal-button:hover {
+            background: #202b36;
+            color: #fff;
+        }
+
+        .terminal-body {
+            flex: 1;
+            padding: 18px;
+            overflow: auto;
+            font-family: "Courier New", Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.65;
+            color: #d7dee5;
+        }
+
+        .terminal-line {
+            white-space: pre-wrap;
+        }
+
+        .terminal-prompt {
+            color: #58a6ff;
+        }
+
+        .terminal-user {
+            color: #7ee787;
+        }
+
+        .terminal-path {
+            color: #d2a8ff;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            margin-top: 3px;
+        }
+
+        .fake-cursor {
+            width: 8px;
+            height: 17px;
+            background: #d7dee5;
+            margin-left: 3px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 45% {
+                opacity: 1;
+            }
+
+            46%, 100% {
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           RESPONSIVO
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            body {
+                overflow: auto;
+            }
+
+            .layout {
+                height: auto;
+                min-height: calc(100vh - 58px);
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-right: 0;
+                border-bottom: 1px solid #26313d;
+            }
+
+            .main {
+                min-height: 650px;
+            }
+
+            .system-status {
+                display: none;
+            }
+
+            .mission-panel {
+                min-height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         CABEÇALHO
+    ========================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="logo">
+                🐧
+            </div>
+
+            <div>
+                <div class="brand-title">
+                    Linux Lab
+                </div>
+
+                <div class="brand-subtitle">
+                    Sistemas Operacionais • Laboratório Interativo
+                </div>
+            </div>
+
+        </div>
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            Ambiente preparado
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         LAYOUT
+    ========================== -->
+
+    <div class="layout">
+
+
+        <!-- =========================
+             MENU LATERAL
+        ========================== -->
+
+        <aside class="sidebar">
+
+            <div class="section-title">
+                Missões
+            </div>
+
+
+            <button class="mission active">
+
+                <span class="mission-icon">
+                    ✓
+                </span>
+
+                <span class="mission-info">
+
+                    <span class="mission-name">
+                        01 • Conhecendo o Shell
+                    </span>
+
+                    <span class="mission-description">
+                        Primeiros comandos
+                    </span>
+
+                </span>
+
+            </button>
+
+
+            <button class="mission locked">
+
+                <span class="mission-icon">
+                    🔒
+                </span>
+
+                <span class="mission-info">
+
+                    <span class="mission-name">
+                        02 • Sistema de Arquivos
+                    </span>
+
+                    <span class="mission-description">
+                        Diretórios e arquivos
+                    </span>
+
+                </span>
+
+            </button>
+
+
+            <button class="mission locked">
+
+                <span class="mission-icon">
+                    🔒
+                </span>
+
+                <span class="mission-info">
+
+                    <span class="mission-name">
+                        03 • Permissões
+                    </span>
+
+                    <span class="mission-description">
+                        chmod, chown e usuários
+                    </span>
+
+                </span>
+
+            </button>
+
+
+            <button class="mission locked">
+
+                <span class="mission-icon">
+                    🔒
+                </span>
+
+                <span class="mission-info">
+
+                    <span class="mission-name">
+                        04 • Processos
+                    </span>
+
+                    <span class="mission-description">
+                        ps, jobs e kill
+                    </span>
+
+                </span>
+
+            </button>
+
+
+            <button class="mission locked">
+
+                <span class="mission-icon">
+                    🔒
+                </span>
+
+                <span class="mission-info">
+
+                    <span class="mission-name">
+                        05 • Pipes
+                    </span>
+
+                    <span class="mission-description">
+                        Comunicação entre comandos
+                    </span>
+
+                </span>
+
+            </button>
+
+
+            <button class="mission locked">
+
+                <span class="mission-icon">
+                    🔒
+                </span>
+
+                <span class="mission-info">
+
+                    <span class="mission-name">
+                        06 • Kernel
+                    </span>
+
+                    <span class="mission-description">
+                        /proc e informações do sistema
+                    </span>
+
+                </span>
+
+            </button>
+
+
+            <button class="mission locked">
+
+                <span class="mission-icon">
+                    🔒
+                </span>
+
+                <span class="mission-info">
+
+                    <span class="mission-name">
+                        07 • Bash
+                    </span>
+
+                    <span class="mission-description">
+                        Variáveis e scripts
+                    </span>
+
+                </span>
+
+            </button>
+
+
+            <button class="mission locked">
+
+                <span class="mission-icon">
+                    🔒
+                </span>
+
+                <span class="mission-info">
+
+                    <span class="mission-name">
+                        08 • Desafio Final
+                    </span>
+
+                    <span class="mission-description">
+                        Desafio prático
+                    </span>
+
+                </span>
+
+            </button>
+
+
+            <!-- PROGRESSO -->
+
+            <div class="progress-box">
+
+                <div class="progress-label">
+
+                    <span>
+                        Progresso
+                    </span>
+
+                    <span>
+                        12%
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div class="progress-fill"></div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =========================
+             CONTEÚDO PRINCIPAL
+        ========================== -->
+
+        <main class="main">
+
+
+            <!-- MISSÃO -->
+
+            <section class="mission-panel">
+
+                <div class="mission-header">
+
+                    <h1 class="mission-title">
+                        Missão 01 — Conhecendo o Shell
+                    </h1>
+
+                    <span class="mission-tag">
+                        INICIANTE
+                    </span>
+
+                </div>
+
+
+                <p class="mission-text">
+
+                    Você acabou de acessar um sistema Linux.
+                    Antes de executar tarefas administrativas,
+                    descubra algumas informações básicas sobre
+                    o ambiente em que está trabalhando.
+
+                </p>
+
+
+                <div class="mission-objective">
+
+                    <span class="objective">
+                        descobrir usuário
+                    </span>
+
+                    <span class="objective">
+                        descobrir diretório
+                    </span>
+
+                    <span class="objective">
+                        descobrir sistema
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- TERMINAL -->
+
+            <section class="terminal-area">
+
+                <div class="terminal-window">
+
+
+                    <div class="terminal-header">
+
+                        <div class="terminal-controls">
+
+                            <span class="control"></span>
+                            <span class="control"></span>
+                            <span class="control"></span>
+
+                        </div>
+
+                        <div class="terminal-title">
+                            Linux Terminal
+                        </div>
+
+                        <div class="terminal-actions">
+
+                            <button class="terminal-button">
+                                Reiniciar
+                            </button>
+
+                            <button class="terminal-button">
+                                Limpar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="terminal-body">
+
+                        <div class="terminal-line">
+                            Linux Lab — ambiente de aprendizagem
+                        </div>
+
+                        <div class="terminal-line">
+                            Inicialização do laboratório...
+                        </div>
+
+                        <br>
+
+                        <div class="terminal-line">
+                            Sistema Linux preparado.
+                        </div>
+
+                        <div class="terminal-line">
+                            Digite comandos no terminal para começar.
+                        </div>
+
+                        <br>
+
+                        <div class="terminal-input-line">
+
+                            <span class="terminal-prompt">
+                                <span class="terminal-user">aluno@linuxlab</span>:<span class="terminal-path">~</span>$
+                            </span>
+
+                            <span class="fake-cursor"></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
