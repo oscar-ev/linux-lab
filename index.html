@@ -4,60 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Linux Lab | Sistemas Operacionais</title>
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0} body{min-height:100vh;overflow-x:hidden;overflow-y:auto;background:#0b0f14;color:#e6edf3;font-family:Arial,Helvetica,sans-serif}.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:#111820;border-bottom:1px solid #26313d}.brand{display:flex;align-items:center;gap:12px}.logo{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;background:#f1f5f9;color:#111820;font-size:21px}.brand-title{font-size:18px;font-weight:700}.brand-subtitle{margin-top:2px;color:#8b98a8;font-size:12px}.system-status{display:flex;gap:8px;align-items:center;color:#8b98a8;font-size:12px}.status-dot{width:9px;height:9px;border-radius:50%;background:#d29922}.status-dot.online{background:#3fb950;box-shadow:0 0 8px rgba(63,185,80,.5)}.layout{min-height:calc(100vh - 58px);display:grid;grid-template-columns:190px minmax(0,1fr)}.sidebar{padding:20px 12px;background:#0f151c;border-right:1px solid #26313d}.section-title{margin:8px 10px 12px;color:#6f7d8d;font-size:11px;font-weight:700;letter-spacing:1px}.mission{width:100%;display:flex;gap:10px;align-items:center;padding:12px 10px;margin-bottom:4px;border:0;border-radius:7px;background:transparent;color:#566270;text-align:left}.mission.active{padding-left:7px;background:#1d2935;border-left:3px solid #58a6ff;color:#fff}.mission.done{color:#9be9a8}.mission-icon{width:14px}.mission-info{display:flex;flex-direction:column;gap:3px}.mission-name{font-size:12px}.mission-description{color:#697787;font-size:10px}.progress-box{margin:28px 10px 0;padding-top:20px;border-top:1px solid #26313d}.progress-label{display:flex;justify-content:space-between;margin-bottom:8px;color:#8b98a8;font-size:12px}.progress-bar{height:7px;overflow:hidden;border-radius:10px;background:#202a34}.progress-fill{height:100%;border-radius:10px;background:#58a6ff;transition:width .3s}.main{min-width:0;min-height:720px;display:grid;grid-template-rows:170px minmax(520px,1fr)}.mission-panel{padding:20px 24px;background:#0e141b;border-bottom:1px solid #26313d}.mission-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.mission-title{font-size:17px}.mission-tag{padding:5px 9px;border:1px solid #264766;border-radius:20px;background:#182b3d;color:#58a6ff;font-size:10px}.mission-text{max-width:900px;color:#9da9b5;font-size:13px;line-height:1.6}.mission-objective{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.objective{padding:6px 9px;border:1px solid #26313d;border-radius:5px;background:#131b23;color:#b9c4cf;font-family:monospace;font-size:11px}.objective.done{border-color:#238636;color:#9be9a8}.terminal-area{min-height:520px;padding:18px}.terminal-window{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;border:1px solid #26313d;border-radius:9px;background:#000}.terminal-header{height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#111820;border-bottom:1px solid #26313d}.terminal-controls,.terminal-actions{display:flex;gap:6px}.control{width:10px;height:10px;border-radius:50%;background:#4b5563}.terminal-title{color:#788594;font:11px monospace}.terminal-button{padding:5px 8px;border:1px solid #303b47;border-radius:5px;background:#17202a;color:#9da9b5;font-size:10px;cursor:pointer}.terminal-button:hover{color:#fff;background:#202b36}#screen_container{flex:1;min-height:0;padding:10px;overflow:hidden}#screen_container .xterm{height:100%}#screen_container .xterm-viewport{overflow-y:auto!important}@media(max-width:850px){.brand-subtitle,.system-status{display:none}.layout{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #26313d}.main{min-height:650px;grid-template-rows:auto minmax(500px,1fr)}.terminal-area{min-height:500px;padding:12px}}
+  </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">🐧</div>
-      <div>
-        <div class="brand-title">Linux Lab</div>
-        <div class="brand-subtitle">Sistemas Operacionais • Laboratório Interativo</div>
-      </div>
-    </div>
-    <div class="system-status">
-      <span class="status-dot" id="statusDot"></span>
-      <span id="statusText">Inicializando Linux...</span>
-    </div>
-  </header>
-
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="section-title">Missões</div>
-      <button class="mission active" type="button"><span class="mission-icon">✓</span><span class="mission-info"><span class="mission-name">01 • Conhecendo o Shell</span><span class="mission-description">Primeiros comandos</span></span></button>
-      <button class="mission" type="button"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">02 • Sistema de Arquivos</span><span class="mission-description">Diretórios e arquivos</span></span></button>
-      <button class="mission" type="button"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">03 • Permissões</span><span class="mission-description">chmod, chown e usuários</span></span></button>
-      <button class="mission" type="button"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">04 • Processos</span><span class="mission-description">ps, jobs e kill</span></span></button>
-      <button class="mission" type="button"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">05 • Pipes</span><span class="mission-description">Comunicação entre comandos</span></span></button>
-      <button class="mission" type="button"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">06 • Kernel</span><span class="mission-description">/proc e informações do sistema</span></span></button>
-      <button class="mission" type="button"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">07 • Bash</span><span class="mission-description">Variáveis e scripts</span></span></button>
-      <button class="mission" type="button"><span class="mission-icon">🔒</span><span class="mission-info"><span class="mission-name">08 • Desafio Final</span><span class="mission-description">Desafio prático</span></span></button>
-      <div class="progress-box"><div class="progress-label"><span>Progresso</span><span>12%</span></div><div class="progress-bar"><div class="progress-fill"></div></div></div>
-    </aside>
-
-    <main class="main">
-      <section class="mission-panel">
-        <div class="mission-header"><h1 class="mission-title">Missão 01 — Conhecendo o Shell</h1><span class="mission-tag">INICIANTE</span></div>
-        <p class="mission-text">Você acabou de acessar um sistema Linux. Antes de executar tarefas administrativas, descubra algumas informações básicas sobre o ambiente em que está trabalhando.</p>
-        <div class="mission-objective"><span class="objective">descobrir usuário</span><span class="objective">descobrir diretório</span><span class="objective">descobrir sistema</span></div>
-      </section>
-
-      <section class="terminal-area">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <div class="terminal-controls"><span class="control"></span><span class="control"></span><span class="control"></span></div>
-            <div class="terminal-title">Linux Terminal • v86</div>
-            <div class="terminal-actions"><button class="terminal-button" id="restartButton" type="button">Reiniciar</button><button class="terminal-button" id="clearButton" type="button">Limpar</button></div>
-          </div>
-          <div id="screen_container" aria-label="Terminal Linux"></div>
-        </div>
-      </section>
-    </main>
-  </div>
+  <header class="topbar"><div class="brand"><div class="logo">🐧</div><div><div class="brand-title">Linux Lab</div><div class="brand-subtitle">Sistemas Operacionais • Laboratório Interativo</div></div></div><div class="system-status"><span class="status-dot" id="statusDot"></span><span id="statusText">Inicializando Linux...</span></div></header>
+  <div class="layout"><aside class="sidebar"><div class="section-title">MISSÕES</div><div id="missionList"></div><div class="progress-box"><div class="progress-label"><span>Progresso</span><span id="progressText">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div></aside><main class="main"><section class="mission-panel"><div class="mission-header"><h1 class="mission-title" id="missionTitle"></h1><span class="mission-tag">INICIANTE</span></div><p class="mission-text" id="missionText"></p><div class="mission-objective" id="objectives"></div></section><section class="terminal-area"><div class="terminal-window"><div class="terminal-header"><div class="terminal-controls"><span class="control"></span><span class="control"></span><span class="control"></span></div><div class="terminal-title">Linux Terminal • v86</div><div class="terminal-actions"><button class="terminal-button" id="restartButton">Reiniciar</button><button class="terminal-button" id="clearButton">Limpar</button></div></div><div id="screen_container"></div></div></section></main></div>
 
   <script src="v86/libv86.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
-  <script src="script.js"></script>
+  <script>
+    const missoes = [
+      {nome:"Conhecendo o Shell",desc:"Descubra quem está usando o sistema, onde você está e qual Linux foi iniciado.",objetivos:["whoami","pwd","uname"],testes:[/^whoami$/, /^pwd$/, /^uname( |$)/]},
+      {nome:"Sistema de Arquivos",desc:"Explore arquivos e crie uma pasta para seu laboratório.",objetivos:["ls","mkdir laboratorio","cd laboratorio"],testes:[/^ls( |$)/,/^mkdir( |$)/,/^cd( |$)/]},
+      {nome:"Permissões",desc:"Consulte permissões e altere a permissão de um arquivo.",objetivos:["ls -l","touch notas.txt","chmod 644 notas.txt"],testes:[/^ls -l/,/^touch( |$)/,/^chmod( |$)/]},
+      {nome:"Processos",desc:"Liste e investigue processos em execução.",objetivos:["ps","ps aux","jobs"],testes:[/^ps( |$)/,/^ps aux/,/^jobs$/]},
+      {nome:"Pipes",desc:"Combine comandos usando pipes e filtros.",objetivos:["echo linux | grep linux","ls | grep","cat notas.txt | grep"],testes:[/^echo .+\|\s*grep/,/^ls.*\|\s*grep/,/^cat .+\|\s*grep/]},
+      {nome:"Kernel",desc:"Consulte informações expostas pelo kernel Linux.",objetivos:["uname -a","cat /proc/version","cat /proc/cpuinfo"],testes:[/^uname -a/,/^cat \/proc\/version/,/^cat \/proc\/cpuinfo/]},
+      {nome:"Bash",desc:"Crie uma variável de ambiente e consulte seu valor.",objetivos:["export NOME=aluno","echo $NOME","env"],testes:[/^export [A-Za-z_]/,/^echo \$[A-Za-z_]/,/^env$/]},
+      {nome:"Desafio Final",desc:"Use comandos Linux para encontrar arquivos e registrar a data.",objetivos:["find / -name notas.txt","date","history"],testes:[/^find( |$)/,/^date$/,/^history$/]}
+    ];
+    const comandosPermitidos = new Set(["ls","pwd","whoami","uname","cd","mkdir","touch","cat","echo","chmod","ps","jobs","kill","grep","find","head","tail","clear","history","date","id","which","export","env","dmesg"]);
+    let emulator=null, pronto=false, promptPadrao=false, linha="", ecoPendente="", pularQuebra=false;
+    const concluidos=missoes.map(()=>new Set());
+    const terminal=new Terminal({cursorBlink:true,scrollback:5000,fontSize:14,fontFamily:'Consolas, "Courier New", monospace',theme:{background:'#000000',foreground:'#d2e9d0',cursor:'#ffffff'}});
+    const tela=document.getElementById('screen_container'); terminal.open(tela); terminal.writeln('Inicializando ambiente Linux...');
+
+    function status(texto,online=false){document.getElementById('statusText').textContent=texto;document.getElementById('statusDot').classList.toggle('online',online)}
+    function atual(){return missoes.findIndex((m,i)=>concluidos[i].size<m.testes.length)}
+    function render(){const indice=atual(),m=missoes[Math.min(indice,missoes.length-1)];document.getElementById('missionTitle').textContent=indice===-1?'Laboratório concluído':`Missão ${String(indice+1).padStart(2,'0')} — ${m.nome}`;document.getElementById('missionText').textContent=indice===-1?'Você concluiu todas as missões. Parabéns!':m.desc;document.getElementById('objectives').innerHTML=indice===-1?'':m.objetivos.map((o,i)=>`<span class="objective ${concluidos[indice].has(i)?'done':''}">${concluidos[indice].has(i)?'✓ ':''}${o}</span>`).join('');document.getElementById('missionList').innerHTML=missoes.map((x,i)=>{const feita=concluidos[i].size===x.testes.length,ativa=i===indice;return `<div class="mission ${ativa?'active':''} ${feita?'done':''}"><span class="mission-icon">${feita?'✓':i>indice?'🔒':'•'}</span><span class="mission-info"><span class="mission-name">${String(i+1).padStart(2,'0')} • ${x.nome}</span><span class="mission-description">${feita?'Concluída':i>indice?'Bloqueada':'Em andamento'}</span></span></div>`}).join('');const total=missoes.reduce((s,m)=>s+m.testes.length,0),feito=concluidos.reduce((s,x)=>s+x.size,0),porcentagem=Math.round(feito/total*100);document.getElementById('progressText').textContent=`${porcentagem}%`;document.getElementById('progressFill').style.width=`${porcentagem}%`}
+    function registrar(comando){const i=atual();if(i===-1)return;missoes[i].testes.forEach((teste,j)=>{if(teste.test(comando))concluidos[i].add(j)});const antes=i,proximo=atual();if(proximo>antes||proximo===-1)terminal.writeln('\r\n\x1b[32m✓ Missão concluída! Nova missão liberada.\x1b[0m');render()}
+    function permitido(comando){const partes=comando.split('|').map(x=>x.trim()).filter(Boolean);return partes.length>0&&partes.every(parte=>comandosPermitidos.has(parte.split(/\s+/)[0]))}
+    function saida(byte){const char=String.fromCharCode(byte);if(ecoPendente){if(char===ecoPendente[0]){ecoPendente=ecoPendente.slice(1);if(!ecoPendente)pularQuebra=true;return}ecoPendente=''}if(pularQuebra&&(char==='\r'||char==='\n'))return;pularQuebra=false;terminal.write(char);if(!promptPadrao&&(char==='%'||char==='#')){} }
+    function iniciar(){status('Carregando Linux...');try{emulator=new V86({wasm_path:'v86/v86.wasm',memory_size:128*1024*1024,vga_memory_size:8*1024*1024,bios:{url:'bios/seabios.bin'},vga_bios:{url:'bios/vgabios.bin'},bzimage:{url:'linux/buildroot-bzimage68.bin',async:false},filesystem:{},cmdline:'tsc=reliable mitigations=off random.trust_cpu=on',autostart:true});emulator.add_listener('serial0-output-byte',byte=>{const c=String.fromCharCode(byte);saida(byte);if(!promptPadrao&&c==='%'){promptPadrao=true;emulator.serial0_send("export PS1='# '\n")}if(promptPadrao&&c==='#'){pronto=true;status('Linux pronto',true)}})}catch(e){console.error(e);terminal.writeln('\r\nErro ao iniciar Linux.');status('Erro ao iniciar Linux')}}
+    terminal.onData(dados=>{if(!pronto)return;if(dados==='\r'){const comando=linha.trim();terminal.write('\r\n');linha='';if(!comando){emulator.serial0_send('\n');return}if(!permitido(comando)){terminal.writeln('\x1b[31mComando não permitido neste laboratório. Use comandos Linux da missão atual.\x1b[0m');terminal.write('# ');return}ecoPendente=comando;emulator.serial0_send(comando+'\n');registrar(comando);return}if(dados==='\x7f'||dados==='\b'){if(linha){linha=linha.slice(0,-1);terminal.write('\b \b')}return}if(dados==='\x03'){linha='';terminal.write('^C\r\n# ');emulator.serial0_send('\x03');return}if(dados.length===1&&dados>=' '){linha+=dados;terminal.write(dados)}});
+    document.getElementById('restartButton').onclick=()=>location.reload();document.getElementById('clearButton').onclick=()=>{terminal.clear();linha='';if(emulator)emulator.serial0_send('clear\n');terminal.focus()};tela.onclick=()=>terminal.focus();render();window.addEventListener('load',iniciar);
+  </script>
 </body>
 </html>
