@@ -94,3 +94,53 @@
 
     function iniciarLinux() {
       setStatus("Carregando Linux...", false);
+
+      // ESTA ERA A PARTE QUE FALTAVA:
+      // aqui é onde o emulador de fato é criado e conectado
+      // aos arquivos de BIOS e do kernel do seu repositório.
+      emulator = new V86({
+        wasm_path: "v86/v86.wasm",
+        memory_size: 128 * 1024 * 1024,
+        vga_memory_size: 8 * 1024 * 1024,
+        screen_container: screen,
+        bios: { url: "bios/seabios.bin" },
+        vga_bios: { url: "bios/vgabios.bin" },
+        bzimage: { url: "linux/buildroot-bzimage68.bin" },
+        cmdline: "tsc=reliable mitigations=off random.trust_cpu=on",
+        autostart: true,
+      });
+
+      // Espelha tudo que sai pela saída serial também no <pre>,
+      // útil caso você queira usar esse texto pra validar as missões.
+      emulator.add_listener("serial0-output-char", function (char) {
+        writeTerminal(char);
+      });
+
+      // Assim que o emulador terminar de subir, tira a mensagem de boot
+      // e marca o status como "online".
+      emulator.add_listener("emulator-ready", function () {
+        if (bootMessage) bootMessage.remove();
+        setStatus("Linux em execução", true);
+        screen.focus();
+      });
+    }
+
+    document.getElementById("restartButton").addEventListener("click", function () {
+      if (emulator) {
+        emulator.restart();
+        setStatus("Reiniciando Linux...", false);
+      }
+    });
+
+    document.getElementById("clearButton").addEventListener("click", function () {
+      output.textContent = "";
+    });
+
+    screen.addEventListener("click", function () {
+      screen.focus();
+    });
+
+    iniciarLinux();
+  </script>
+</body>
+</html>
