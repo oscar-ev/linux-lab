@@ -6,7 +6,70 @@
   <title>Linux Lab | Sistemas Operacionais</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0} body{min-height:100vh;overflow-x:hidden;overflow-y:auto;background:#0b0f14;color:#e6edf3;font-family:Arial,Helvetica,sans-serif}.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:#111820;border-bottom:1px solid #26313d}.brand{display:flex;align-items:center;gap:12px}.logo{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;background:#f1f5f9;color:#111820;font-size:21px}.brand-title{font-size:18px;font-weight:700}.brand-subtitle{margin-top:2px;color:#8b98a8;font-size:12px}.system-status{display:flex;gap:8px;align-items:center;color:#8b98a8;font-size:12px}.status-dot{width:9px;height:9px;border-radius:50%;background:#d29922}.status-dot.online{background:#3fb950;box-shadow:0 0 8px rgba(63,185,80,.5)}.layout{min-height:calc(100vh - 58px);display:grid;grid-template-columns:190px minmax(0,1fr)}.sidebar{padding:20px 12px;background:#0f151c;border-right:1px solid #26313d}.section-title{margin:8px 10px 12px;color:#6f7d8d;font-size:11px;font-weight:700;letter-spacing:1px}.mission{width:100%;display:flex;gap:10px;align-items:center;padding:12px 10px;margin-bottom:4px;border:0;border-radius:7px;background:transparent;color:#566270;text-align:left}.mission.active{padding-left:7px;background:#1d2935;border-left:3px solid #58a6ff;color:#fff}.mission.done{color:#9be9a8}.mission-icon{width:14px}.mission-info{display:flex;flex-direction:column;gap:3px}.mission-name{font-size:12px}.mission-description{color:#697787;font-size:10px}.progress-box{margin:28px 10px 0;padding-top:20px;border-top:1px solid #26313d}.progress-label{display:flex;justify-content:space-between;margin-bottom:8px;color:#8b98a8;font-size:12px}.progress-bar{height:7px;overflow:hidden;border-radius:10px;background:#202a34}.progress-fill{height:100%;border-radius:10px;background:#58a6ff;transition:width .3s}.main{min-width:0;min-height:720px;display:grid;grid-template-rows:170px minmax(520px,1fr)}.mission-panel{padding:20px 24px;background:#0e141b;border-bottom:1px solid #26313d}.mission-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.mission-title{font-size:17px}.mission-tag{padding:5px 9px;border:1px solid #264766;border-radius:20px;background:#182b3d;color:#58a6ff;font-size:10px}.mission-text{max-width:900px;color:#9da9b5;font-size:22px;line-height:1.6}.mission-objective{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.objective{padding:6px 9px;border:1px solid #26313d;border-radius:5px;background:#131b23;color:#b9c4cf;font-family:monospace;font-size:15px}.objective.done{border-color:#238636;color:#9be9a8}.terminal-area{min-height:520px;padding:18px}.terminal-window{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;border:1px solid #26313d;border-radius:9px;background:#000}.terminal-header{height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#111820;border-bottom:1px solid #26313d}.terminal-controls,.terminal-actions{display:flex;gap:6px}.control{width:10px;height:10px;border-radius:50%;background:#4b5563}.terminal-title{color:#788594;font:11px monospace}.terminal-button{padding:5px 8px;border:1px solid #303b47;border-radius:5px;background:#17202a;color:#9da9b5;font-size:10px;cursor:pointer}.terminal-button:hover{color:#fff;background:#202b36}#screen_container{flex:1;min-height:0;padding:10px;overflow:hidden}#screen_container .xterm{height:100%}#screen_container .xterm-viewport{overflow-y:auto!important}@media(max-width:850px){.brand-subtitle,.system-status{display:none}.layout{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #26313d}.main{min-height:650px;grid-template-rows:auto minmax(500px,1fr)}.terminal-area{min-height:500px;padding:12px}.mission-text{font-size:16px}.objective{font-size:13px}}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-text-size-adjust:100%}
+    body{min-height:100vh;overflow-x:hidden;overflow-y:auto;background:#0b0f14;color:#e6edf3;font-family:Arial,Helvetica,sans-serif}
+    .topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:#111820;border-bottom:1px solid #26313d}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;background:#f1f5f9;color:#111820;font-size:21px;flex-shrink:0}
+    .brand-title{font-size:clamp(15px,1.4vw,18px);font-weight:700}
+    .brand-subtitle{margin-top:2px;color:#8b98a8;font-size:12px}
+    .system-status{display:flex;gap:8px;align-items:center;color:#8b98a8;font-size:12px;flex-shrink:0}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:#d29922}
+    .status-dot.online{background:#3fb950;box-shadow:0 0 8px rgba(63,185,80,.5)}
+    .layout{min-height:calc(100vh - 58px);display:grid;grid-template-columns:190px minmax(0,1fr)}
+    .sidebar{padding:20px 12px;background:#0f151c;border-right:1px solid #26313d;min-width:0}
+    .section-title{margin:8px 10px 12px;color:#6f7d8d;font-size:11px;font-weight:700;letter-spacing:1px}
+    .mission{width:100%;display:flex;gap:10px;align-items:center;padding:12px 10px;margin-bottom:4px;border:0;border-radius:7px;background:transparent;color:#566270;text-align:left}
+    .mission.active{padding-left:7px;background:#1d2935;border-left:3px solid #58a6ff;color:#fff}
+    .mission.done{color:#9be9a8}
+    .mission-icon{width:14px;flex-shrink:0}
+    .mission-info{display:flex;flex-direction:column;gap:3px;min-width:0}
+    .mission-name{font-size:12px}
+    .mission-description{color:#697787;font-size:10px}
+    .progress-box{margin:28px 10px 0;padding-top:20px;border-top:1px solid #26313d}
+    .progress-label{display:flex;justify-content:space-between;margin-bottom:8px;color:#8b98a8;font-size:12px}
+    .progress-bar{height:7px;overflow:hidden;border-radius:10px;background:#202a34}
+    .progress-fill{height:100%;border-radius:10px;background:#58a6ff;transition:width .3s}
+    .main{min-width:0;display:grid;grid-template-rows:auto minmax(420px,1fr)}
+    .mission-panel{padding:18px 24px;background:#0e141b;border-bottom:1px solid #26313d}
+    .mission-header{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:space-between;margin-bottom:10px}
+    .mission-title{font-size:clamp(14px,1.6vw,17px)}
+    .mission-tag{padding:5px 9px;border:1px solid #264766;border-radius:20px;background:#182b3d;color:#58a6ff;font-size:10px;white-space:nowrap}
+    .mission-text{max-width:900px;color:#9da9b5;font-size:clamp(13px,1.35vw,17px);line-height:1.6}
+    .mission-objective{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .objective{padding:6px 9px;border:1px solid #26313d;border-radius:5px;background:#131b23;color:#b9c4cf;font-family:monospace;font-size:clamp(11px,1.05vw,13px);word-break:break-word;max-width:100%}
+    .objective.done{border-color:#238636;color:#9be9a8}
+    .terminal-area{min-height:0;padding:18px;display:flex}
+    .terminal-window{width:100%;min-height:360px;display:flex;flex-direction:column;overflow:hidden;border:1px solid #26313d;border-radius:9px;background:#000}
+    .terminal-header{height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#111820;border-bottom:1px solid #26313d}
+    .terminal-controls,.terminal-actions{display:flex;gap:6px}
+    .control{width:10px;height:10px;border-radius:50%;background:#4b5563}
+    .terminal-title{color:#788594;font:11px monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .terminal-button{padding:5px 8px;border:1px solid #303b47;border-radius:5px;background:#17202a;color:#9da9b5;font-size:10px;cursor:pointer}
+    .terminal-button:hover{color:#fff;background:#202b36}
+    #screen_container{flex:1;min-height:0;padding:10px;overflow:hidden}
+    #screen_container .xterm{height:100%}
+    #screen_container .xterm-viewport{overflow-y:auto!important}
+    @media(max-width:1200px){
+      .layout{grid-template-columns:160px minmax(0,1fr)}
+      .mission-panel{padding:16px 18px}
+      .terminal-area{padding:14px}
+    }
+    @media(max-width:850px){
+      .brand-subtitle,.system-status{display:none}
+      .layout{grid-template-columns:1fr}
+      .sidebar{border-right:0;border-bottom:1px solid #26313d}
+      .main{grid-template-rows:auto minmax(380px,1fr)}
+      .terminal-area{padding:12px}
+      .terminal-window{min-height:320px}
+    }
+    @media(max-width:480px){
+      .mission-panel{padding:12px 14px}
+      .mission-objective{gap:6px}
+      .objective{padding:5px 7px}
+      .terminal-window{min-height:280px}
+    }
   </style>
 </head>
 <body>
@@ -15,6 +78,7 @@
 
   <script src="v86/libv86.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
   <script>
     const missoes = [
       {nome:"Conhecendo o Shell",desc:"Use comandos básicos do dia a dia para identificar usuário, diretório, sistema e data.",objetivos:["whoami","pwd","uname -a","id","date"],testes:[/^whoami$/,/^pwd$/,/^uname -a$/,/^id$/,/^date$/]},
@@ -24,19 +88,34 @@
       {nome:"Pipes",desc:"Combine comandos usando pipes, filtros e ordenação.",objetivos:["echo linux | grep linux","ls | grep notas","cat notas.txt | grep","history | tail"],testes:[/^echo .+\|\s*grep/,/^ls.*\|\s*grep/,/^cat .+\|\s*grep/,/^history.*\|\s*tail/]},
       {nome:"Kernel",desc:"Consulte informações expostas pelo kernel Linux e seus recursos.",objetivos:["uname -a","cat /proc/version","cat /proc/cpuinfo","dmesg"],testes:[/^uname -a$/,/^cat \/proc\/version$/,/^cat \/proc\/cpuinfo$/,/^dmesg$/]},
       {nome:"Bash",desc:"Crie uma variável, consulte seu valor e examine o ambiente do shell.",objetivos:["export NOME=aluno","echo $NOME","env","which ls"],testes:[/^export [A-Za-z_][A-Za-z0-9_]*=/,/^echo \$[A-Za-z_]/,/^env$/,/^which ls$/]},
-      {nome:"Desafio Final",desc:"Execute cinco comandos Linux diferentes. Além dos exemplos anteriores, qualquer comando da lista permitida vale para concluir.",objetivos:["1º comando Linux","2º comando Linux","3º comando Linux","4º comando Linux","5º comando Linux"],testes:[],final:true}
+      {nome:"Desafio Final",desc:"Chegou a hora de reunir tudo o que você aprendeu. Crie uma pasta chamada projeto_final e entre nela. Dentro dela, crie uma subpasta chamada logs e acesse-a. Registre a mensagem \"Sistema iniciado\" em um arquivo sistema.log e confira o conteúdo com cat. Em seguida, acrescente a linha \"Verificação concluída\" ao final do arquivo, sem apagar o que já existe. Volte um nível acima e liste os arquivos da pasta atual com detalhes de permissão e tamanho. Copie o arquivo logs/sistema.log para a raiz do projeto com o nome relatorio_final.txt e restrinja suas permissões para leitura e escrita apenas do dono. Para fechar, liste os processos em execução filtrando pelo shell com um pipe, crie uma variável de ambiente chamada PROJETO com o valor final e confirme o valor dela.",objetivos:["mkdir projeto_final","cd projeto_final","mkdir logs","cd logs","echo \"Sistema iniciado\" > sistema.log","cat sistema.log","echo \"Verificação concluída\" >> sistema.log","cd ..","ls -l","cp logs/sistema.log relatorio_final.txt","chmod 600 relatorio_final.txt","ps aux | grep sh","export PROJETO=final","echo $PROJETO"],testes:[/^mkdir projeto_final$/,/^cd projeto_final$/,/^mkdir logs$/,/^cd logs$/,/^echo .+[^>]>\s*sistema\.log$/,/^cat sistema\.log$/,/^echo .+>>\s*sistema\.log$/,/^cd \.\.$/,/^ls -l$/,/^cp logs\/sistema\.log relatorio_final\.txt$/,/^chmod 600 relatorio_final\.txt$/,/^ps aux\s*\|\s*grep sh$/,/^export PROJETO=final$/,/^echo \$PROJETO$/]}
     ];
     const comandosPermitidos = new Set(["alias","basename","cat","cd","chmod","clear","cmp","cp","cut","date","dmesg","du","echo","env","export","find","grep","head","history","id","jobs","kill","less","ln","ls","mkdir","more","mv","paste","pathchk","printf","ps","pwd","readlink","rm","rmdir","sed","sort","tail","tee","touch","tr","true","uname","uniq","wc","which","whoami","xargs"]);
     let emulator=null, pronto=false, promptPadrao=false, linha="", ecoPendente="", pularQuebra=false;
     const concluidos=missoes.map(()=>new Set());
-    const terminal=new Terminal({cursorBlink:true,scrollback:5000,fontSize:16,fontFamily:'Consolas, "Courier New", monospace',theme:{background:'#000000',foreground:'#d2e9d0',cursor:'#ffffff'}});
+
+    function tamanhoFonteTerminal(){const largura=window.innerWidth;if(largura<=480)return 12;if(largura<=850)return 13;if(largura<=1200)return 14;return 16}
+
+    const terminal=new Terminal({cursorBlink:true,scrollback:5000,fontSize:tamanhoFonteTerminal(),fontFamily:'Consolas, "Courier New", monospace',theme:{background:'#000000',foreground:'#d2e9d0',cursor:'#ffffff'}});
+    const fitAddon = (typeof FitAddon!=='undefined')?new FitAddon.FitAddon():null;
+    if(fitAddon) terminal.loadAddon(fitAddon);
     const tela=document.getElementById('screen_container'); terminal.open(tela); terminal.writeln('Inicializando ambiente Linux...');
+    if(fitAddon) fitAddon.fit();
+
+    let redimensionandoTimer=null;
+    window.addEventListener('resize',()=>{
+      clearTimeout(redimensionandoTimer);
+      redimensionandoTimer=setTimeout(()=>{
+        terminal.options.fontSize=tamanhoFonteTerminal();
+        if(fitAddon) fitAddon.fit();
+      },150);
+    });
 
     function status(texto,online=false){document.getElementById('statusText').textContent=texto;document.getElementById('statusDot').classList.toggle('online',online)}
-    function requisitos(missao){return missao.final?5:missao.testes.length}
+    function requisitos(missao){return missao.testes.length}
     function atual(){return missoes.findIndex((m,i)=>concluidos[i].size<requisitos(m))}
-    function render(){const indice=atual(),m=missoes[Math.min(indice,missoes.length-1)];document.getElementById('missionTitle').textContent=indice===-1?'Laboratório concluído':`Missão ${String(indice+1).padStart(2,'0')} — ${m.nome}`;document.getElementById('missionText').textContent=indice===-1?'Você concluiu todas as missões. Parabéns!':m.desc;document.getElementById('objectives').innerHTML=indice===-1?'':m.objetivos.map((o,i)=>`<span class="objective ${concluidos[indice].has(i)?'done':''}">${concluidos[indice].has(i)?'✓ ':''}${o}</span>`).join('');document.getElementById('missionList').innerHTML=missoes.map((x,i)=>{const feita=concluidos[i].size===requisitos(x),ativa=i===indice;return `<div class="mission ${ativa?'active':''} ${feita?'done':''}"><span class="mission-icon">${feita?'✓':i>indice?'🔒':'•'}</span><span class="mission-info"><span class="mission-name">${String(i+1).padStart(2,'0')} • ${x.nome}</span><span class="mission-description">${feita?'Concluída':i>indice?'Bloqueada':'Em andamento'}</span></span></div>`}).join('');const total=missoes.reduce((s,m)=>s+requisitos(m),0),feito=concluidos.reduce((s,x)=>s+x.size,0),porcentagem=Math.round(feito/total*100);document.getElementById('progressText').textContent=`${porcentagem}%`;document.getElementById('progressFill').style.width=`${porcentagem}%`}
-    function registrar(comando){const i=atual();if(i===-1)return;const missao=missoes[i];if(missao.final){const raiz=comando.split(/\s+/)[0];concluidos[i].add(raiz)}else{missao.testes.forEach((teste,j)=>{if(teste.test(comando))concluidos[i].add(j)})}const antes=i,proximo=atual();if(proximo>antes||proximo===-1)terminal.writeln('\r\n\x1b[32m✓ Missão concluída! Nova missão liberada.\x1b[0m');render()}
+    function render(){const indice=atual(),m=missoes[Math.min(indice,missoes.length-1)];document.getElementById('missionTitle').textContent=indice===-1?'Laboratório concluído':`Missão ${String(indice+1).padStart(2,'0')} — ${m.nome}`;document.getElementById('missionText').textContent=indice===-1?'Você concluiu todas as missões. Parabéns!':m.desc;document.getElementById('objectives').innerHTML=indice===-1?'':m.objetivos.map((o,i)=>`<span class="objective ${concluidos[indice].has(i)?'done':''}">${concluidos[indice].has(i)?'✓ ':''}${o}</span>`).join('');document.getElementById('missionList').innerHTML=missoes.map((x,i)=>{const feita=concluidos[i].size===requisitos(x),ativa=i===indice;return `<div class="mission ${ativa?'active':''} ${feita?'done':''}"><span class="mission-icon">${feita?'✓':i>indice?'🔒':'•'}</span><span class="mission-info"><span class="mission-name">${String(i+1).padStart(2,'0')} • ${x.nome}</span><span class="mission-description">${feita?'Concluída':i>indice?'Bloqueada':'Em andamento'}</span></span></div>`}).join('');const total=missoes.reduce((s,m)=>s+requisitos(m),0),feito=concluidos.reduce((s,x)=>s+x.size,0),porcentagem=Math.round(feito/total*100);document.getElementById('progressText').textContent=`${porcentagem}%`;document.getElementById('progressFill').style.width=`${porcentagem}%`;if(fitAddon) fitAddon.fit()}
+    function registrar(comando){const i=atual();if(i===-1)return;const missao=missoes[i];missao.testes.forEach((teste,j)=>{if(teste.test(comando))concluidos[i].add(j)});const antes=i,proximo=atual();if(proximo>antes||proximo===-1)terminal.writeln('\r\n\x1b[32m✓ Missão concluída! Nova missão liberada.\x1b[0m');render()}
     function permitido(comando){const partes=comando.split('|').map(x=>x.trim()).filter(Boolean);return partes.length>0&&partes.every(parte=>comandosPermitidos.has(parte.split(/\s+/)[0]))}
     function saida(byte){const char=String.fromCharCode(byte);if(ecoPendente){if(char===ecoPendente[0]){ecoPendente=ecoPendente.slice(1);if(!ecoPendente)pularQuebra=true;return}ecoPendente=''}if(pularQuebra&&(char==='\r'||char==='\n'))return;pularQuebra=false;terminal.write(char);if(!promptPadrao&&(char==='%'||char==='#')){} }
     function iniciar(){status('Carregando Linux...');try{emulator=new V86({wasm_path:'v86/v86.wasm',memory_size:128*1024*1024,vga_memory_size:8*1024*1024,bios:{url:'bios/seabios.bin'},vga_bios:{url:'bios/vgabios.bin'},bzimage:{url:'linux/buildroot-bzimage68.bin',async:false},filesystem:{},cmdline:'tsc=reliable mitigations=off random.trust_cpu=on',autostart:true});emulator.add_listener('serial0-output-byte',byte=>{const c=String.fromCharCode(byte);saida(byte);if(!promptPadrao&&c==='%'){promptPadrao=true;emulator.serial0_send("export PS1='$PWD # '\n")}if(promptPadrao&&c==='#'){pronto=true;status('Linux pronto',true)}})}catch(e){console.error(e);terminal.writeln('\r\nErro ao iniciar Linux.');status('Erro ao iniciar Linux')}}
